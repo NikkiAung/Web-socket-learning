@@ -95,13 +95,25 @@
             socket.emit('chat',data);
         });
 
+        message.addEventListener('keypress',()=>{
+            socket.emit('typing',name.value);
+        })
+
         socket.on('chat', (data)=> {
             // console.log(data);
             output.innerHTML += `<p><strong>${data.name}</strong> : <strong>${data.message}</strong></p>`
             name.value = '';
             message.value = '';
+            feedback.innerHTML = '';
+        });
+
+        socket.on('typing',(name)=> {
+            feedback.innerHTML = `<p><em>${name}</em> is typing...</p>`;
+            setTimeout(() => {
+                feedback.innerHTML = '';
+            }, 3000);
         })
- 
+        
     </script>
 </body>
 </html>
