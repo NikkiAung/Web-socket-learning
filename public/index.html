@@ -76,10 +76,32 @@
         <input type="text" placeholder="Name" id="name" />
         <input type="text" placeholder="Message" id="message" />
         <button id="send">send</button>
-      </div>
+    </div>
   
     <script>
         const socket = io('http://localhost:3000');
+
+        let output = document.getElementById("output");
+        let feedback = document.getElementById("feedback");
+        let name = document.getElementById("name");
+        let message = document.getElementById("message");
+        let send = document.getElementById("send");
+
+        send.addEventListener('click',()=>{
+            data = {
+                name : name.value,
+                message : message.value
+            }
+            socket.emit('chat',data);
+        });
+
+        socket.on('chat', (data)=> {
+            // console.log(data);
+            output.innerHTML += `<p><strong>${data.name}</strong> : <strong>${data.message}</strong></p>`
+            name.value = '';
+            message.value = '';
+        })
+ 
     </script>
 </body>
 </html>
